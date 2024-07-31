@@ -30,6 +30,10 @@ const POSTS = [
   },
 ];
 
+const SESSIONS = [
+
+]
+
 const server = new Butter();
 
 /** File Routes */
@@ -59,7 +63,16 @@ server.route("get", "/api/posts", (req, res) => {
   res.status(200).json(posts);
 });
 
-server.route("get", "/api/user", (req, res) => {});
+server.route("get", "/api/user", (req, res) => {
+  const token = req.headers.cookie.split("=")[1]
+  const session = SESSIONS.find(session => session.token = token)
+  if (session){
+      console.log("session", session)
+  }else{
+    res.status(401).send({ error: "Unauthorized"});
+  }
+  console.log(token)
+});
 
 server.route("post", "/api/login", (req, res) => {
   let body = "";
@@ -75,13 +88,19 @@ server.route("post", "/api/login", (req, res) => {
 
     const user = USERS.find((user) => user.username === username);
     if (user && user.password === password) {
+      const token = Math.floor(Math.random() * 10000000000).toString()
+      SESSIONS.push({
+        userId: user.id,
+        token
+      })
+      res.setHeader("Set-Cookie", `token=${token}; Path=/;`)
       res.status(200).json({ message: "Logged in successfully" });
     } else {
       res.status(401).send({ error: "Invalid username or password" });
     }
   });
 });
-
+ 
 server.listen(PORT, () => {
   console.log("server listening on port 8000");
 });
