@@ -9,5 +9,11 @@
   "author": "",
   "license": "ISC",
   "description": "",
-  "type": "module"
+  "type": "module",
+  "dependencies": {
+    "@types/node": "^22.0.2",
+    "mkdirp": "^0.5.5",
+    "slug": "^9.1.0",
+    "superagent": "^5.2.2"
+  }
 }
