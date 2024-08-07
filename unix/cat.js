@@ -10,6 +10,8 @@ if (filePath) {
   });
 }
 
-stdin.on("data", (data) => {
-  stdout.write(data.toString("utf8").toUpperCase());
-});
+stdin.pipe(stdout);
+
+// stdin.on("data", (data) => {
+//   stdout.write(data.toString("utf8").toUpperCase());
+// });
